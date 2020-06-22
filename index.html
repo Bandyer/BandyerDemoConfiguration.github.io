@@ -1,0 +1,338 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"></script>
+
+  <script src="js/easy.qrcode.min.js" type="text/javascript" charset="utf-8"></script>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+          integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+          integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<div style="margin:25px">
+
+  <label for="configurationUrl">Input Url</label>
+  <input type="url" class="form-control" id="configurationUrl"
+         placeholder="https://configuration.demo_android_sdk.bandyer.com/...">
+  <br/>
+  <form id="myForm" action="https://configuration.demo_android_sdk.bandyer.com/" method="get">
+
+    <div class="form-row form-group align-items-center">
+      <div class="form-group col-auto">
+        <label for="userAlias">User alias</label>
+        <input type="text" class="form-control" id="userAlias" name="userAlias" placeholder="user1">
+      </div>
+
+      <div class="form-group col-auto">
+        <label for="environment">Environment</label>
+        <input type="text" class="form-control" id="environment" name="environment" placeholder="sandbox" required>
+        <div class="invalid-feedback">
+          Please provide a valid environment.
+        </div>
+      </div>
+
+      <div class="form-group col-auto">
+        <label for="appId">AppID</label>
+        <input type="text" class="form-control" id="appId" name="appId" placeholder="mAppId_xxx" required>
+        <div class="invalid-feedback">
+          Please provide a valid app id.
+        </div>
+      </div>
+
+      <div class="form-group col-auto">
+        <label for="apiKey">Api key</label>
+        <input type="text" class="form-control" id="apiKey" name="apiKey" placeholder="ak_xxx" required>
+        <div class="invalid-feedback">
+          Please provide a valid api key.
+        </div>
+      </div>
+
+    </div>
+    <div class="form-row form-group align-items-center">
+      <div class="form-group col-auto">
+        <label for="logoName">Logo name</label>
+        <input type="text" class="form-control" id="logoName" name="logoName" placeholder="Bandyer">
+      </div>
+
+      <div class="form-group col-auto">
+        <label for="logoUrl">Logo url</label>
+        <input type="url" class="form-control" id="logoUrl" name="logoUrl" placeholder="https://">
+      </div>
+    </div>
+
+    <div class="form-row form-group align-items-center">
+
+      <div class="form-group col-auto">
+        <label for="pushProvider">Push provider</label>
+        <select class="form-control" id="pushProvider" name="pushProvider">
+          <option>FCM</option>
+          <option>Pushy</option>
+        </select>
+      </div>
+
+      <div class="form-group col-auto">
+        <label for="firebaseProjectNumber">Firebase project number</label>
+        <input type="text" class="form-control" id="firebaseProjectNumber" name="projectNumber" placeholder="3234234">
+      </div>
+
+      <div class="form-group col-auto">
+        <label for="firebaseProjectId">Firebase project id</label>
+        <input type="text" class="form-control" id="firebaseProjectId" name="firebaseProjectId"
+               placeholder="bandyer-project-name">
+      </div>
+
+      <div class="form-group col-auto">
+        <label for="firebaseApiKey">Firebase project api key</label>
+        <input type="text" class="form-control" id="firebaseApiKey" name="firebaseApiKey" placeholder="Aiza_xxx">
+      </div>
+
+      <div class="form-group col-auto">
+        <label for="firebaseMobileAppId">Firebase project app id</label>
+        <input type="text" class="form-control" id="firebaseMobileAppId" name="firebaseMobileAppId"
+               placeholder="1:323434:android:">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="card form-group" style="max-width: 20rem; margin-right: 2rem;">
+        <div class="card-header">Call options</div>
+        <div class="card-body">
+
+          <div class="form-row form-group align-items-center">
+
+            <div class="col-auto">
+              <select class="form-control" id="defaultCallType" name="defaultCallType">
+                <option>AUDIO_VIDEO</option>
+                <option>AUDIO_UPGRADABLE</option>
+                <option>AUDIO_ONLY</option>
+              </select>
+            </div>
+
+            <div class="form-check form-check-inline col-auto">
+              <input class="form-check-input" type="checkbox" id="withWhiteboardCapability"
+                     name="withWhiteboardCapability"
+                     value="true" checked>
+              <label class="form-check-label" for="withWhiteboardCapability">Whiteboard Capability</label>
+            </div>
+
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="withFileSharingCapability"
+                     name="withFileSharingCapability"
+                     checked value="true">
+              <label class="form-check-label" for="withFileSharingCapability">FileSharing Capability</label>
+            </div>
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="withChatCapability" name="withChatCapability" checked
+                     value="true">
+              <label class="form-check-label" for="withChatCapability">Chat Capability</label>
+            </div>
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="withScreenSharingCapability"
+                     name="withScreenSharingCapability" checked value="true">
+              <label class="form-check-label" for="withScreenSharingCapability">ScreenSharing Capability</label>
+            </div>
+
+          </div>
+
+          <div class="form-row form-group align-items-center">
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="withMockAuthentication" name="withMockAuthentication"
+                     value="false">
+              <label class="form-check-label" for="withMockAuthentication">Mock verify user with fingerprint</label>
+            </div>
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="useMockUserDetailsProvider" value="false"
+                     name="useMockUserDetailsProvider">
+              <label class="form-check-label" for="useMockUserDetailsProvider">Mock user's details</label>
+            </div>
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="useSimplifiedVersion" name="useSimplifiedVersion"
+                     checked
+                     value="true">
+              <label class="form-check-label" for="useSimplifiedVersion">Use simplified version</label>
+            </div>
+          </div>
+
+          <div class="form-row form-group align-items-center ">
+
+            <div class="form-check form-check-inline col-auto">
+              <input class="form-check-input" type="checkbox" id="withRecordingEnabled" name="withRecordingEnabled"
+                     value="false">
+              <label class="form-check-label" for="withRecordingEnabled">Recording</label>
+            </div>
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="withBackCameraAsDefault"
+                     name="withBackCameraAsDefault"
+                     value="false">
+              <label class="form-check-label" for="withBackCameraAsDefault">Back camera as default</label>
+            </div>
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="withProximityDisabled" name="withProximityDisabled"
+                     value="false">
+              <label class="form-check-label" for="withProximityDisabled">Proximity disabled</label>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      <div class="card form-group" style="max-width: 20rem;height: fit-content;">
+
+        <div class="card-header">Debug options</div>
+        <div class="card-body">
+          <div class="form-row form-group align-items-center">
+
+            <div class="form-check form-check-inline col-auto">
+              <input type="checkbox" class="form-check-input" id="useLeakCanary" name="useLeakCanary"
+                     value="false">
+              <label class="form-check-label" for="useLeakCanary">Use LeakCanary</label>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+            onclick="printLink()">
+      Generate
+    </button>
+  </form>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="scanHeader" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="scanHeader">Scan QR</h5>
+        </div>
+        <div class="modal-body" style="text-align:center">
+          <div id="qrcode"></div>
+          <a id="genLink"
+             style=" /* Warning: Needed for oldIE support, but words are broken up letter-by-letter */
+    -ms-word-break: break-all;
+    word-break: break-all;
+    /* Non standard for webkit */
+    word-break: break-word;
+
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;"></a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+  $("input[type='checkbox']").on('change', function () {
+    this.value = this.checked;
+  });
+
+  var fillForm = function () {
+    var link = document.getElementById("configurationUrl").value;
+    if (link) {
+      try {
+        (new URL(link)).searchParams.forEach((x, y) => {
+            const element = document.getElementsByName(y)[0];
+            if (element === undefined) return;
+            if (element.tagName === "INPUT" && element.type === "checkbox") {
+              element.checked = x === "true";
+            }
+            element.value = x;
+            element.dispatchEvent(new Event('change'));
+          }
+        )
+      } catch (_) {
+        return false;
+      }
+    } else {
+      document.getElementById("myForm").reset();
+    }
+  };
+  var qrCode;
+
+  var printLink = function () {
+    var serialized = $("#myForm input").filter(function () {
+      return !!this.value;
+    }).add(($("#myForm select")).filter(function () {
+      return !!this.value;
+    })).serialize();
+
+    genLink.innerHTML = "https://configuration.demo_android_sdk.bandyer.com?" + serialized;
+    genLink.href = "https://configuration.demo_android_sdk.bandyer.com?" + serialized;
+
+    var options = {
+      text: "https://github.com/ushelp/EasyQRCodeJS",
+      title: document.getElementById("environment").value + ' - ' + document.getElementById("userAlias").value, // content
+      titleFont: "bold 18px Arial", //font. default is "bold 16px Arial"
+      titleColor: "#004284", // color. default is "#000"
+      titleBackgroundColor: "#fff", // background color. default is "#fff"
+      titleHeight: 70, // height, including subTitle. default is 0
+      titleTop: 25, // draws y coordinates. default is 30
+      subTitle: 'QRVersion-1.0', // content
+      logo: document.getElementById("logoUrl").value,
+      // logoBackgroundColor: '#000',
+      //  logoWidth: 80, // widht. default is automatic width
+      // logoHeight: 80, // height. default is automatic height
+
+      subTitleFont: "14px Arial", // font. default is "14px Arial"
+      subTitleColor: "#004284", // color. default is "4F4F4F"
+      subTitleTop: 40, // draws y coordinates. default is 0
+      quietZone: 20,
+      quietZoneColor: 'white',
+    };
+
+    qrCode = new QRCode(document.getElementById("qrcode"), options);
+    qrCode.makeCode("https://configuration.demo_android_sdk.bandyer.com?" + serialized);
+  };
+
+  $("#configurationUrl").change(fillForm);
+
+  $("#pushProvider").change(function () {
+    if ($("#pushProvider").val() === "Pushy") {
+      $('input[id ^= "firebase"]').hide();
+      $('label[for ^= "firebase"]').hide();
+    } else {
+      $('input[id ^= "firebase"]').show();
+      $('label[for ^= "firebase"]').show();
+    }
+  });
+
+
+  $('#exampleModal').on('hidden.bs.modal', function (e) {
+    qrCode.clear();
+  });
+
+</script>
+
+
+</body>
+
+
+</html>
