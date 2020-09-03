@@ -71,8 +71,8 @@
                 <input type="url" class="form-control" id="logoUrl" name="logoUrl" placeholder="https://">
 
             </div>
-            <div class="form-group col-auto">
-                <img src="" id="logoImg" style=" height: 70px;padding: 16px;" crossorigin="anonymous"/>
+            <div id="image-container" class="form-group col-auto">
+                <!-- <img src="" id="logoImg" style=" height: 70px;padding: 16px;"/> -->
             </div>
 
         </div>
@@ -351,16 +351,34 @@
     });
 
     $("#logoUrl").change(function () {
-        $("#logoImg").attr("src", document.getElementById("logoUrl").value)
+        const image = new Image();
+        image.crossOrigin = 'Anonymous';
+        image.src = $("#logoUrl").val() + '?'+Math.random();
+        image.height= '70';
+        image.padding= '16';
+        image.addEventListener('load', function () {
+            $('#image-container').append(image);
+            const colorThief = new ColorThief();
+            let color = colorThief.getColor(image);
+            if (!shouldHaveWhiteText(color)) logoBackgroundColor = "#000000";
+            else logoBackgroundColor = "#f4f4f4";
+            $("#logoImg").css("background-color", logoBackgroundColor);
+        });
     });
 
-    document.getElementById("logoImg").addEventListener('load', function () {
-        const colorThief = new ColorThief();
-        let color = colorThief.getColor(document.getElementById("logoImg"));
-        if (!shouldHaveWhiteText(color)) logoBackgroundColor = "#000000";
-        else logoBackgroundColor = "#f4f4f4";
-        $("#logoImg").css("background-color", logoBackgroundColor);
-    });
+    /*document.getElementById("logoImg").addEventListener('load', function () {
+		const image = new Image();
+		image.crossOrigin = 'Anonymous';
+		image.src =  $("#logoUrl").val();
+		image.addEventListener('load', function () {
+			const colorThief = new ColorThief();
+			let color = colorThief.getColor(document.getElementById("logoImg"));
+			if (!shouldHaveWhiteText(color)) logoBackgroundColor = "#000000";
+			else logoBackgroundColor = "#f4f4f4";
+			  $("#logoImg").css("background-color", logoBackgroundColor);
+		});
+
+    });*/
 
 
     $('#exampleModal').on('hidden.bs.modal', function (e) {
