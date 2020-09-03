@@ -8,6 +8,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"></script>
 
     <script src="js/easy.qrcode.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.primarycolor.min.js" type="text/javascript" charset="utf-8"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -17,7 +18,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 </head>
 <body>
 <div style="margin:25px">
@@ -71,8 +71,8 @@
                 <input type="url" class="form-control" id="logoUrl" name="logoUrl" placeholder="https://">
 
             </div>
-            <div id="image-container" class="form-group col-auto">
-                <!-- <img src="" id="logoImg" style=" height: 70px;padding: 16px;"/> -->
+            <div class="form-group col-auto">
+                <img src="" id="logoImg" style=" height: 70px;padding: 16px;" crossorigin="Anonymous"/>
             </div>
 
         </div>
@@ -351,34 +351,16 @@
     });
 
     $("#logoUrl").change(function () {
-        const image = new Image();
-        image.crossOrigin = 'Anonymous';
-        image.src = $("#logoUrl").val() + '?'+Math.random();
-        image.height= '70';
-        image.padding= '16';
-        image.addEventListener('load', function () {
-            $('#image-container').append(image);
-            const colorThief = new ColorThief();
-            let color = colorThief.getColor(image);
-            if (!shouldHaveWhiteText(color)) logoBackgroundColor = "#000000";
+        $("#logoImg").attr("src", document.getElementById("logoUrl").value)
+    });
+
+    document.getElementById("logoImg").addEventListener('load', function () {
+        $("#logoImg").primaryColor(function (color, colors) {
+            if (!shouldHaveWhiteText(color.split(","))) logoBackgroundColor = "#000000";
             else logoBackgroundColor = "#f4f4f4";
             $("#logoImg").css("background-color", logoBackgroundColor);
         });
     });
-
-    /*document.getElementById("logoImg").addEventListener('load', function () {
-		const image = new Image();
-		image.crossOrigin = 'Anonymous';
-		image.src =  $("#logoUrl").val();
-		image.addEventListener('load', function () {
-			const colorThief = new ColorThief();
-			let color = colorThief.getColor(document.getElementById("logoImg"));
-			if (!shouldHaveWhiteText(color)) logoBackgroundColor = "#000000";
-			else logoBackgroundColor = "#f4f4f4";
-			  $("#logoImg").css("background-color", logoBackgroundColor);
-		});
-
-    });*/
 
 
     $('#exampleModal').on('hidden.bs.modal', function (e) {
@@ -387,13 +369,12 @@
 
 
     const shouldHaveWhiteText = (rgb) => {
-        const red = rgb[0];
-        const green = rgb[1];
-        const blue = rgb[2];
+        const red = parseInt(rgb[0]);
+        const green = parseInt(rgb[1]);
+        const blue = parseInt(rgb[2]);
         const yiq = ((red * 299) + (green * 587) + (blue * 114)) / 1000;
         return yiq < 192
     };
-
 
 
 </script>
