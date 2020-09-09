@@ -246,17 +246,11 @@
                 </div>
                 <div class="modal-body" style="text-align:center">
                     <div id="qrcode"></div>
-                    <a id="genLink"
-                       style=" /* Warning: Needed for oldIE support, but words are broken up letter-by-letter */
-    -ms-word-break: break-all;
-    word-break: break-all;
-    /* Non standard for webkit */
-    word-break: break-word;
-
-    -webkit-hyphens: auto;
-    -moz-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;"></a>
+                    <h6 class="modal-title">DeepLink</h6>
+                    <a id="genLink" style="display: block;overflow-y: hidden;white-space: nowrap;"></a>
+                    <br/>
+                    <h6 class="modal-title">ADB command</h6>
+                    <kbd id="adbCode" style="display: block;overflow-y: hidden;white-space: nowrap;"></kbd>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -305,8 +299,12 @@
             return !!this.value;
         })).serialize();
 
-        genLink.innerHTML = "https://configuration.demo_android_sdk.bandyer.com?" + serialized;
-        genLink.href = "https://configuration.demo_android_sdk.bandyer.com?" + serialized;
+        const confUri = new URL("https://configuration.demo_android_sdk.bandyer.com?" + serialized);
+
+        genLink.innerHTML = confUri.toString();
+        genLink.href = confUri.toString();
+
+        adbCode.innerHTML = "adb shell am start -a android.intent.action.VIEW -d https://configuration.demo_android_sdk.bandyer.com?" + encodeURIComponent(decodeURIComponent(confUri.search.substring(1)));
 
         var options = {
             width: 512,
@@ -335,7 +333,7 @@
         };
 
         qrCode = new QRCode(document.getElementById("qrcode"), options);
-        qrCode.makeCode("https://configuration.demo_android_sdk.bandyer.com?" + serialized);
+        qrCode.makeCode(confUri.toString());
     };
 
     $("#configurationUrl").change(fillForm);
