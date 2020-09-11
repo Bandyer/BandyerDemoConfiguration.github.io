@@ -30,8 +30,11 @@
             <input type="url" class="form-control" id="configurationUrl"
                    placeholder="https://configuration.demo_android_sdk.bandyer.com/...">
         </div>
-        <div class="col-6" style="display: inline-flex;align-items: flex-end;">
-            <button class="btn btn-primary" onclick="document.getElementById('file').click()">Select QR file | Drag&Drop</button>
+        <div class="row col-1 align-items-end"><p style="width: 100%;text-align: center;">OR</p></div>
+        <div class="col-5" style="display: inline-flex;align-items: flex-end;">
+            <button class="btn btn-outline-secondary" style="height: 100%;width: 100%;"
+                    onclick="document.getElementById('file').click()">Select QR file | Drag&Drop
+            </button>
             <input type='file' id="file" accept="image/*" style="display:none">
         </div>
     </div>
