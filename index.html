@@ -279,7 +279,32 @@
 </div>
 
 
+
 <script type="text/javascript">
+
+    document.onpaste = function(pasteEvent) {
+        const data = pasteEvent.clipboardData.items;
+        for (var i = 0; i < data.length; i += 1) {
+            if ((data[i].kind == 'file') &&
+                (data[i].type.match('^image/'))) {
+                // Drag data item is an image file
+                var file = data[i].getAsFile();
+                QrScanner.scanImage(file)
+                    .then(result => $('#configurationUrl').val(result).change())
+                    .catch(error => console.log(error || 'No QR code found.'));
+            } else if ((data[i].kind == 'string') &&
+                (data[i].type.match('^text/plain'))) {
+                // Drag data item is HTML
+                data[i].getAsString(function (s){
+                    QrScanner.scanImage(new File(s))
+                        .then(result => $('#configurationUrl').val(result).change())
+                        .catch(error => console.log(error || 'No QR code found.'));
+                });
+
+            }
+        }
+    };
+
     function allowDrop(ev) {
         ev.preventDefault();
     }
