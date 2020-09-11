@@ -41,7 +41,8 @@
 
     <br/>
 
-    <form id="myForm" action="https://configuration.demo_android_sdk.bandyer.com/" method="get">
+    <form id="myForm" action="https://configuration.demo_android_sdk.bandyer.com/" method="get" class="card"
+          style="padding: 1%;">
 
         <div class="form-row form-group align-items-center">
             <div class="form-group col-auto">
@@ -245,10 +246,11 @@
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                onclick="printLink()">
-            Generate
-        </button>
+        <div class="form-row form-group align-items-center">
+            <button type="button" class="btn btn-primary" style="width: 100%;" data-toggle="modal" data-target="#exampleModal" onclick="printLink()">
+                Generate
+            </button>
+        </div>
     </form>
 
     <!-- Modal -->
