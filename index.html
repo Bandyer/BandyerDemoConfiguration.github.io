@@ -8,7 +8,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.js"></script>
 
     <script src="js/easy.qrcode.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="js/jquery.primarycolor.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/imgcolr.html5.min.js" type="text/javascript" charset="utf-8"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -18,6 +18,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous"></script>
+    <script src="js/canvas-to-blob.js" type="text/javascript" charset="utf-8" crossorigin="anonymous"></script>
     <script src="qr-scanner.umd.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -247,7 +248,8 @@
             </div>
         </div>
         <div class="form-row form-group align-items-center">
-            <button type="button" class="btn btn-primary" style="width: 100%;" data-toggle="modal" data-target="#exampleModal" onclick="printLink()">
+            <button type="button" class="btn btn-primary" style="width: 100%;" data-toggle="modal"
+                    data-target="#exampleModal" onclick="printLink()">
                 Generate
             </button>
         </div>
@@ -279,31 +281,27 @@
 </div>
 
 
-
 <script type="text/javascript">
 
-    document.onpaste = function(pasteEvent) {
-        const data = pasteEvent.clipboardData.items;
-        for (var i = 0; i < data.length; i += 1) {
-            if ((data[i].kind == 'file') &&
-                (data[i].type.match('^image/'))) {
-                // Drag data item is an image file
-                var file = data[i].getAsFile();
-                QrScanner.scanImage(file)
-                    .then(result => $('#configurationUrl').val(result).change())
-                    .catch(error => console.log(error || 'No QR code found.'));
-            } else if ((data[i].kind == 'string') &&
-                (data[i].type.match('^text/plain'))) {
-                // Drag data item is HTML
-                data[i].getAsString(function (s){
-                    QrScanner.scanImage(new File(s))
-                        .then(result => $('#configurationUrl').val(result).change())
-                        .catch(error => console.log(error || 'No QR code found.'));
-                });
 
-            }
-        }
-    };
+    function convertImgToBase64URL(url) {
+        var img = new Image();
+        img.crossOrigin = 'Anonymous';
+        const result = new Promise((resolve) => {
+            img.onload = function () {
+                var canvas = document.createElement('CANVAS'),
+                    ctx = canvas.getContext('2d'), dataURL;
+                canvas.height = img.height;
+                canvas.width = img.width;
+                ctx.drawImage(img, 0, 0);
+                dataURL = canvas.toDataURL();
+                resolve(dataURL);
+                canvas = null;
+            };
+        });
+        img.src = "https://cors-anywhere.herokuapp.com/" + url;
+        return result
+    }
 
     function allowDrop(ev) {
         ev.preventDefault();
@@ -361,50 +359,6 @@
 
     var logoBackgroundColor = "#f4f4f4";
 
-    var printLink = function () {
-        var serialized = $("#myForm input").filter(function () {
-            return !!this.value;
-        }).add(($("#myForm select")).filter(function () {
-            return !!this.value;
-        })).serialize();
-
-        const confUri = new URL("https://configuration.demo_android_sdk.bandyer.com?" + serialized);
-
-        genLink.innerHTML = confUri.toString();
-        genLink.href = confUri.toString();
-
-        adbCode.innerHTML = "adb shell am start -a android.intent.action.VIEW -d https://configuration.demo_android_sdk.bandyer.com?" + encodeURIComponent(decodeURIComponent(confUri.search.substring(1)));
-
-        var options = {
-            width: 512,
-            height: 512,
-            text: "https://github.com/ushelp/EasyQRCodeJS",
-            title: document.getElementById("environment").value + ' - ' + document.getElementById("userAlias").value, // content
-            correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
-            dotScale: 0.5,
-            titleFont: "bold 18px Arial", //font. default is "bold 16px Arial"
-            titleColor: "#004284", // color. default is "#000"
-            titleBackgroundColor: "#fff", // background color. default is "#fff"
-            autoColor: true,
-            titleHeight: 70, // height, including subTitle. default is 0
-            titleTop: 25, // draws y coordinates. default is 30
-            subTitle: 'QRVersion-1.0', // content
-            logo: document.getElementById("logoUrl").value,
-            logoBackgroundColor: logoBackgroundColor,
-            //  logoWidth: 80, // widht. default is automatic width
-            // logoHeight: 80, // height. default is automatic height
-
-            subTitleFont: "14px Arial", // font. default is "14px Arial"
-            subTitleColor: "#004284", // color. default is "4F4F4F"
-            subTitleTop: 40, // draws y coordinates. default is 0
-            quietZone: 80,
-            quietZoneColor: 'white',
-        };
-
-        qrCode = new QRCode(document.getElementById("qrcode"), options);
-        qrCode.makeCode(confUri.toString());
-    };
-
     $("#configurationUrl").change(fillForm);
 
     $("#pushProvider").change(function () {
@@ -417,13 +371,14 @@
         }
     });
 
-    $("#logoUrl").change(function () {
-        $("#logoImg").attr("src", document.getElementById("logoUrl").value)
+    $("#logoUrl").change(async function () {
+        var base64 = await convertImgToBase64URL(document.getElementById("logoUrl").value)
+        $("#logoImg").attr("src", base64)
     });
 
     document.getElementById("logoImg").addEventListener('load', function () {
-        $("#logoImg").primaryColor(function (color, colors) {
-            if (!shouldHaveWhiteText(color.split(","))) logoBackgroundColor = "#000000";
+        $("#logoImg").imgcolr(function (img, color) {
+            if (!shouldHaveWhiteText(hexToRGB(color))) logoBackgroundColor = "#000000";
             else logoBackgroundColor = "#f4f4f4";
             $("#logoImg").css("background-color", logoBackgroundColor);
         });
@@ -443,11 +398,102 @@
         return yiq < 192
     };
 
+    const hexToRGB = (hex) => {
+        let parseString = hex;
+        if (hex.startsWith('#')) {
+            parseString = hex.slice(1, 7);
+        }
+        if (parseString.length !== 6) {
+            return null;
+        }
+        const r = parseInt(parseString.slice(0, 2), 16);
+        const g = parseInt(parseString.slice(2, 4), 16);
+        const b = parseInt(parseString.slice(4, 6), 16);
+        if (isNaN(r) || isNaN(g) || isNaN(b)) {
+            return null;
+        }
+        return [r, g, b];
+    };
+
+    function printLink() {
+        var serialized = $("#myForm input").filter(function () {
+            return !!this.value;
+        }).add(($("#myForm select")).filter(function () {
+            return !!this.value;
+        })).serialize();
+
+        const confUri = new URL("https://configuration.demo_android_sdk.bandyer.com?" + serialized);
+
+        genLink.innerHTML = confUri.toString();
+        genLink.href = confUri.toString();
+
+        adbCode.innerHTML = "adb shell am start -a android.intent.action.VIEW -d https://configuration.demo_android_sdk.bandyer.com?" + encodeURIComponent(decodeURIComponent(confUri.search.substring(1)));
+        return new Promise((resolve) => {
+            var options = {
+                width: 512,
+                height: 512,
+                text: "ok",
+                title: document.getElementById("environment").value + ' - ' + document.getElementById("userAlias").value, // content
+                correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
+                dotScale: 0.5,
+                titleFont: "bold 18px Arial", //font. default is "bold 16px Arial"
+                titleColor: "#004284", // color. default is "#000"
+                titleBackgroundColor: "#fff", // background color. default is "#fff"
+                autoColor: true,
+                titleHeight: 70, // height, including subTitle. default is 0
+                titleTop: 25, // draws y coordinates. default is 30
+                subTitle: 'QRVersion-1.0', // content
+                logo: $("#logoImg").attr("src"),
+                logoBackgroundColor: logoBackgroundColor,
+                //  logoWidth: 80, // widht. default is automatic width
+                // logoHeight: 80, // height. default is automatic height
+
+                subTitleFont: "14px Arial", // font. default is "14px Arial"
+                subTitleColor: "#004284", // color. default is "4F4F4F"
+                subTitleTop: 40, // draws y coordinates. default is 0
+                quietZone: 80,
+                quietZoneColor: 'white',
+                onRenderingEnd: () => {
+                    resolve()
+                }
+            };
+            qrCode = new QRCode(document.getElementById("qrcode"), options);
+            qrCode.makeCode(confUri.toString());
+        })
+    }
+
+    document.onpaste = function (pasteEvent) {
+        if (document.activeElement && ['input', 'textarea'].indexOf(document.activeElement.tagName.toLowerCase()) !== -1) return;
+        const data = pasteEvent.clipboardData.items;
+        for (var i = 0; i < data.length; i += 1) {
+            if ((data[i].kind == 'file') &&
+                (data[i].type.match('^image/'))) {
+                // Drag data item is an image file
+                var file = data[i].getAsFile();
+                QrScanner.scanImage(file)
+                    .then(result => $('#configurationUrl').val(result).change())
+                    .catch(error => console.log(error || 'No QR code found.'));
+            } else if ((data[i].kind == 'string') &&
+                (data[i].type.match('^text/'))) {
+                // Drag data item is HTML
+                data[i].getAsString(function (s) {
+                    QrScanner.scanImage(new File([""], s))
+                        .then(result => $('#configurationUrl').val(result).change())
+                        .catch(error => console.log(error || 'No QR code found.'));
+                });
+            }
+        }
+    }
+
+    document.oncopy = async function () {
+        if (document.activeElement && ['input', 'textarea'].indexOf(document.activeElement.tagName.toLowerCase()) !== -1 || window.getSelection().toString() !== "") return;
+        if (qrCode) qrCode.clear()
+        await printLink()
+        document.getElementById("qrcode").firstChild.toBlob(function (blob) {
+            navigator.clipboard.write([new ClipboardItem({'image/png': blob})])
+        }, 'image/png');
+    }
 
 </script>
-
-
 </body>
-
-
 </html>
