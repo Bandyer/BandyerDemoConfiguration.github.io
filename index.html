@@ -99,6 +99,7 @@
             <div class="form-group col-auto">
                 <label for="pushProvider">Push provider</label>
                 <select class="form-control" id="pushProvider" name="pushProvider">
+                    <option>NONE</option>
                     <option>FCM</option>
                     <option>Pushy</option>
                 </select>
@@ -362,7 +363,7 @@
     $("#configurationUrl").change(fillForm);
 
     $("#pushProvider").change(function () {
-        if ($("#pushProvider").val() === "Pushy") {
+        if ($("#pushProvider").val() !== "FCM") {
             $('input[id ^= "firebase"]').hide();
             $('label[for ^= "firebase"]').hide();
         } else {
@@ -370,6 +371,9 @@
             $('label[for ^= "firebase"]').show();
         }
     });
+
+    $('input[id ^= "firebase"]').hide();
+    $('label[for ^= "firebase"]').hide();
 
     $("#logoUrl").change(async function () {
         var base64 = await convertImgToBase64URL(document.getElementById("logoUrl").value)
