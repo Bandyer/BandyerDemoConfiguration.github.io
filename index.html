@@ -128,6 +128,11 @@
                 <input type="text" class="form-control" id="firebaseMobileAppId" name="firebaseMobileAppId"
                        placeholder="1:323434:android:">
             </div>
+            <div class="form-group col-auto">
+                <label for="hmsAppId">Huawei mobile services app id</label>
+                <input type="text" class="form-control" id="hmsAppId" name="hmsAppId"
+                       placeholder="12344321">
+            </div>
         </div>
 
         <div class="form-row">
@@ -366,14 +371,20 @@
         if ($("#pushProvider").val() !== "FCM") {
             $('input[id ^= "firebase"]').hide();
             $('label[for ^= "firebase"]').hide();
+            $('input[id ^= "hms"]').hide();
+            $('label[for ^= "hms"]').hide();
         } else {
             $('input[id ^= "firebase"]').show();
             $('label[for ^= "firebase"]').show();
+            $('input[id ^= "hms"]').show();
+            $('label[for ^= "hms"]').show();
         }
     });
 
     $('input[id ^= "firebase"]').hide();
     $('label[for ^= "firebase"]').hide();
+    $('input[id ^= "hms"]').hide();
+    $('label[for ^= "hms"]').hide();
 
     $("#logoUrl").change(async function () {
         var base64 = await convertImgToBase64URL(document.getElementById("logoUrl").value)
