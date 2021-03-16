@@ -283,9 +283,6 @@
             </div>
         </div>
     </div>
-    <ul>
-        <li id="testing" style="">Testing</li>
-    </ul>
 
 </div>
 
@@ -473,7 +470,6 @@
                 quietZone: 80,
                 quietZoneColor: 'white',
                 onRenderingEnd: (url,base64) => {
-                    document.getElementById("testing").innerText = base64;
                     resolve()
                 }
             };
