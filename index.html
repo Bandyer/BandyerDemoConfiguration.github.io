@@ -509,6 +509,20 @@
         }, 'image/png');
     }
 
+    async function setup() {
+        const url = new URL(window.location.href);
+        const inputUrl = decodeURIComponent(url.searchParams.get("inputUrl"));
+        if(inputUrl) {
+            $('#configurationUrl').val(inputUrl).change();
+            await printLink();
+            document.getElementById("qrcode").firstChild.toBlob(function (blob) {
+                navigator.clipboard.write([new ClipboardItem({'image/png': blob})])
+            }, 'image/png');
+        }
+    }
+
+    setup();
+
 </script>
 </body>
 </html>
