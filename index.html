@@ -136,7 +136,7 @@
         </div>
 
         <div class="form-row">
-            <div class="card form-group" style="max-width: 20rem; margin-right: 2rem;">
+            <div class="card form-group" style="max-width: 21rem; margin-right: 2rem;">
                 <div class="card-header">Call options</div>
                 <div class="card-body">
 
@@ -192,11 +192,12 @@
                                 fingerprint</label>
                         </div>
 
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="useMockUserDetailsProvider"
-                                   value="false"
-                                   name="useMockUserDetailsProvider">
-                            <label class="form-check-label" for="useMockUserDetailsProvider">Mock user's details</label>
+                        <div class="form-check form-inline" style="padding-left: 8%;">
+                            <label class="form-check-label" for="userDetailsProviderMode" style="margin-right: 22px;">Mock user's details</label>
+                            <select class="form-control" id="userDetailsProviderMode" name="userDetailsProviderMode">
+                                <option>NONE</option>
+                                <option>SAMPLE</option>
+                            </select>
                         </div>
 
                         <div class="form-check form-check-inline col-auto">
@@ -236,7 +237,7 @@
                 </div>
 
             </div>
-            <div class="card form-group" style="max-width: 20rem;height: fit-content;">
+            <div class="card form-group" style="max-width: 21rem;height: fit-content;">
 
                 <div class="card-header">Debug options</div>
                 <div class="card-body">
