@@ -67,7 +67,7 @@
 
             <label for="configurationUrl">Input Url</label>
             <input type="url" class="form-control" id="configurationUrl"
-                   placeholder="https://configuration.demo_android_sdk.bandyer.com/...">
+                   placeholder="https://configuration.app.bandyer.com/...">
         </div>
         <div class="col-1" style="align-self: flex-end;"><p style="width: 100%;text-align: center;">OR</p></div>
         <div class="col-5">
@@ -80,7 +80,7 @@
 
     <br/>
 
-    <form id="myForm" action="https://configuration.demo_android_sdk.bandyer.com/" method="get" class="card"
+    <form id="myForm" action="https://configuration.app.bandyer.com/" method="get" class="card"
           style="padding: 1.5em;">
 
         <div class="form-row form-group align-items-center">
@@ -426,12 +426,25 @@
             return !!this.value;
         })).serialize();
 
-        const confUri = new URL("https://configuration.demo_android_sdk.bandyer.com?" + serialized);
+
+        const confUri = new URL("https://configuration.app.bandyer.com?" + serialized);
+
+        if($("#pushProvider").val() !== "FCM"){
+            confUri.searchParams.delete("projectNumber");
+            confUri.searchParams.delete("firebaseProjectId");
+            confUri.searchParams.delete("firebaseApiKey");
+            confUri.searchParams.delete("firebaseMobileAppId");
+            confUri.searchParams.delete("hmsAppId");
+        }
+
+        if($("#pushProvider").val() !== "HMS"){
+            confUri.searchParams.delete("hmsAppId");
+        }
 
         genLink.text = confUri.toString();
         genLink.href = confUri.toString();
 
-        adbCode.innerHTML = "adb shell am start -a android.intent.action.VIEW -d https://configuration.demo_android_sdk.bandyer.com?" + encodeURIComponent(decodeURIComponent(confUri.search.substring(1)));
+        adbCode.innerHTML = "adb shell am start -a android.intent.action.VIEW -d https://configuration.app.bandyer.com?" + encodeURIComponent(decodeURIComponent(confUri.search.substring(1)));
 
         return new Promise((resolve) => {
             var options = {
