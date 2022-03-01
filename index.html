@@ -102,8 +102,8 @@
             </div>
 
             <div class="form-group col-auto">
-                <label for="userAlias">User alias</label>
-                <input type="text" class="form-control" id="userAlias" name="userAlias" placeholder="user1">
+                <label for="userId">User Id</label>
+                <input type="text" class="form-control" id="userId" name="userId" placeholder="user1">
             </div>
 
             <div class="form-group col-auto " style="padding-left:16px;">
@@ -451,7 +451,7 @@
                 width: 512,
                 height: 512,
                 text: "ok",
-                title: document.getElementById("environment").value + ' - ' + document.getElementById("userAlias").value, // content
+                title: document.getElementById("environment").value + ' - ' + document.getElementById("userId").value, // content
                 correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
                 dotScale: 0.5,
                 titleFont: "bold 18px Arial", //font. default is "bold 16px Arial"
