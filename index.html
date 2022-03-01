@@ -260,14 +260,14 @@
     var isCopyingLink = false
 
     $('.js-copy-adb').click(function () {
-        var text = $("#adbCode").html();
+        var text = $("#adbCode").text();
         isCopyingLink = true;
         navigator.clipboard.writeText(text)
         isCopyingLink = false;
     });
 
     $('.js-copy-link').click(function () {
-        var text = $("#genLink").html();
+        var text = $("#genLink").text();
         isCopyingLink = true;
         navigator.clipboard.writeText(text)
         isCopyingLink = false;
