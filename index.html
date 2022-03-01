@@ -20,6 +20,44 @@
             crossorigin="anonymous"></script>
     <script src="js/canvas-to-blob.js" type="text/javascript" charset="utf-8" crossorigin="anonymous"></script>
     <script src="qr-scanner.umd.min.js" type="text/javascript" charset="utf-8"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+        .select2-container--default .select2-selection--single {
+            display: block;
+            width: 100%;
+            height: calc(1.5em + 0.75rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            display: none;
+        }
+
+        .icon {
+            width: 16px;
+            height: 16px;
+            padding: 0;
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            text-indent: 1px;
+            text-overflow: '';
+        }
+    </style>
 </head>
 <body ondrop="drop(event)" ondragover="allowDrop(event)">
 <div style="margin:25px">
@@ -46,17 +84,12 @@
           style="padding: 1.5em;">
 
         <div class="form-row form-group align-items-center">
-            <div class="form-group col-auto">
-                <label for="userAlias">User alias</label>
-                <input type="text" class="form-control" id="userAlias" name="userAlias" placeholder="user1">
-            </div>
 
             <div class="form-group col-auto">
-                <label for="environment">Environment</label>
-                <input type="text" class="form-control" id="environment" name="environment" placeholder="sandbox"
-                       required>
+                <label for="apiKey">Api key</label>
+                <input type="text" class="form-control" id="apiKey" name="apiKey" placeholder="ak_xxx" required>
                 <div class="invalid-feedback">
-                    Please provide a valid environment.
+                    Please provide a valid api key.
                 </div>
             </div>
 
@@ -69,11 +102,24 @@
             </div>
 
             <div class="form-group col-auto">
-                <label for="apiKey">Api key</label>
-                <input type="text" class="form-control" id="apiKey" name="apiKey" placeholder="ak_xxx" required>
-                <div class="invalid-feedback">
-                    Please provide a valid api key.
-                </div>
+                <label for="userAlias">User alias</label>
+                <input type="text" class="form-control" id="userAlias" name="userAlias" placeholder="user1">
+            </div>
+
+            <div class="form-group col-auto " style="padding-left:16px;">
+                <label for="environment">Environment</label>
+                <select class="form-control" style="width: 100%;" id="environment" name="environment">
+                    <option selected="selected" value="sandbox">sandbox</option>
+                    <option value="production">production</option>
+                </select>
+            </div>
+
+            <div class="form-group col-auto " style="padding-left:16px;">
+                <label for="region">Region</label>
+                <select class="form-control" style="width: 100%;" id="region" name="region">
+                    <option selected="selected" value="eu">eu</option>
+                    <option value="in">in</option>
+                </select>
             </div>
 
         </div>
@@ -135,125 +181,6 @@
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="card form-group" style="max-width: 21rem; margin-right: 2rem;">
-                <div class="card-header">Call options</div>
-                <div class="card-body">
-
-                    <div class="form-row form-group align-items-center">
-
-                        <div class="col-auto">
-                            <select class="form-control" id="defaultCallType" name="defaultCallType">
-                                <option>AUDIO_VIDEO</option>
-                                <option>AUDIO_UPGRADABLE</option>
-                                <option>AUDIO_ONLY</option>
-                            </select>
-                        </div>
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input class="form-check-input" type="checkbox" id="withWhiteboardCapability"
-                                   name="withWhiteboardCapability"
-                                   value="true" checked>
-                            <label class="form-check-label" for="withWhiteboardCapability">Whiteboard Capability</label>
-                        </div>
-
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="withFileSharingCapability"
-                                   name="withFileSharingCapability"
-                                   checked value="true">
-                            <label class="form-check-label" for="withFileSharingCapability">FileSharing
-                                Capability</label>
-                        </div>
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="withChatCapability"
-                                   name="withChatCapability" checked
-                                   value="true">
-                            <label class="form-check-label" for="withChatCapability">Chat Capability</label>
-                        </div>
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="withScreenSharingCapability"
-                                   name="withScreenSharingCapability" checked value="true">
-                            <label class="form-check-label" for="withScreenSharingCapability">ScreenSharing
-                                Capability</label>
-                        </div>
-
-                    </div>
-
-                    <div class="form-row form-group align-items-center">
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="withMockAuthentication"
-                                   name="withMockAuthentication"
-                                   value="false">
-                            <label class="form-check-label" for="withMockAuthentication">Mock verify user with
-                                fingerprint</label>
-                        </div>
-
-                        <div class="form-check form-inline" style="padding-left: 8%;">
-                            <label class="form-check-label" for="userDetailsProviderMode" style="margin-right: 22px;">Mock user's details</label>
-                            <select class="form-control" id="userDetailsProviderMode" name="userDetailsProviderMode">
-                                <option>NONE</option>
-                                <option>SAMPLE</option>
-                            </select>
-                        </div>
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="useSimplifiedVersion"
-                                   name="useSimplifiedVersion"
-                                   checked
-                                   value="true">
-                            <label class="form-check-label" for="useSimplifiedVersion">Use simplified version</label>
-                        </div>
-                    </div>
-
-                    <div class="form-row form-group align-items-center ">
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input class="form-check-input" type="checkbox" id="withRecordingEnabled"
-                                   name="withRecordingEnabled"
-                                   value="false">
-                            <label class="form-check-label" for="withRecordingEnabled">Recording</label>
-                        </div>
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="withBackCameraAsDefault"
-                                   name="withBackCameraAsDefault"
-                                   value="false">
-                            <label class="form-check-label" for="withBackCameraAsDefault">Back camera as default</label>
-                        </div>
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="withProximityDisabled"
-                                   name="withProximityDisabled"
-                                   value="false">
-                            <label class="form-check-label" for="withProximityDisabled">Proximity disabled</label>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-            <div class="card form-group" style="max-width: 21rem;height: fit-content;">
-
-                <div class="card-header">Debug options</div>
-                <div class="card-body">
-                    <div class="form-row form-group align-items-center">
-
-                        <div class="form-check form-check-inline col-auto">
-                            <input type="checkbox" class="form-check-input" id="useLeakCanary" name="useLeakCanary"
-                                   value="false">
-                            <label class="form-check-label" for="useLeakCanary">Use LeakCanary</label>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
         <div class="form-row form-group align-items-center">
             <button type="button" class="btn btn-primary" style="width: 100%;" data-toggle="modal"
                     data-target="#exampleModal" onclick="printLink()">
@@ -270,13 +197,36 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="scanHeader">Scan QR</h5>
                 </div>
-                <div class="modal-body" style="text-align:center">
+                <div class="modal-body " style="text-align:center;">
                     <div id="qrcode"></div>
                     <h6 class="modal-title">DeepLink</h6>
-                    <a id="genLink" style="display: block;overflow-y: hidden;white-space: nowrap;"></a>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button type="button" class="input-group-text js-tooltip js-copy-link" data-toggle="tooltip"
+                                    data-placement="bottom" title="Copy to clipboard">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                     viewBox="0 0 24 24">
+                                    <path d="M17,9H7V7H17M17,13H7V11H17M14,17H7V15H14M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <a id="genLink" class="form-control"
+                           style="overflow-y: hidden;display: block;white-space: nowrap;"></a>
+                    </div>
                     <br/>
                     <h6 class="modal-title">ADB command</h6>
-                    <kbd id="adbCode" style="display: block;overflow-y: hidden;white-space: nowrap;"></kbd>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button type="button" class="input-group-text js-tooltip js-copy-adb" data-toggle="tooltip"
+                                    data-placement="bottom" title="Copy to clipboard">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                     viewBox="0 0 24 24">
+                                    <path d="M17,9H7V7H17M17,13H7V11H17M14,17H7V15H14M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"/>
+                                </svg>
+                            </button>
+                            <kbd id="adbCode" style="overflow-y: hidden;display: block;word-break: break-all;"></kbd>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -290,6 +240,38 @@
 
 <script type="text/javascript">
 
+    function setSelectionData(selectionDiv, data) {
+        if (selectionDiv.find("option[value='" + data.id + "']").length) {
+            selectionDiv.val(data.id).trigger('change');
+        } else {
+            // Create a DOM Option and pre-select by default
+            var newOption = new Option(data.text, data.id, true, true);
+            // Append it to the select
+            selectionDiv.append(newOption).trigger('change');
+        }
+    }
+
+    $("#region").select2({tags: true});
+    $("#environment").select2({tags: true});
+
+    $('.js-tooltip').tooltip();
+
+
+    var isCopyingLink = false
+
+    $('.js-copy-adb').click(function () {
+        var text = $("#adbCode").html();
+        isCopyingLink = true;
+        navigator.clipboard.writeText(text)
+        isCopyingLink = false;
+    });
+
+    $('.js-copy-link').click(function () {
+        var text = $("#genLink").html();
+        isCopyingLink = true;
+        navigator.clipboard.writeText(text)
+        isCopyingLink = false;
+    });
 
     function convertImgToBase64URL(url) {
         var img = new Image();
@@ -353,6 +335,11 @@
                         }
                         element.value = x;
                         element.dispatchEvent(new Event('change'));
+                        if (element.id === "region") {
+                            setSelectionData($("#region"), {text: x, id: x})
+                        } else if (element.id === "environment") {
+                            setSelectionData($("#environment"), {text: x, id: x})
+                        }
                     }
                 )
             } catch (_) {
@@ -390,6 +377,7 @@
     $("#logoUrl").change(async function () {
         var base64 = await convertImgToBase64URL(document.getElementById("logoUrl").value)
         $("#logoImg").attr("src", base64)
+        qrCode.clear()
     });
 
     document.getElementById("logoImg").addEventListener('load', function () {
@@ -440,7 +428,7 @@
 
         const confUri = new URL("https://configuration.demo_android_sdk.bandyer.com?" + serialized);
 
-        genLink.innerHTML = confUri.toString();
+        genLink.text = confUri.toString();
         genLink.href = confUri.toString();
 
         adbCode.innerHTML = "adb shell am start -a android.intent.action.VIEW -d https://configuration.demo_android_sdk.bandyer.com?" + encodeURIComponent(decodeURIComponent(confUri.search.substring(1)));
@@ -470,12 +458,13 @@
                 subTitleTop: 40, // draws y coordinates. default is 0
                 quietZone: 80,
                 quietZoneColor: 'white',
-                onRenderingEnd: (url,base64) => {
+                onRenderingEnd: (url, base64) => {
                     resolve()
                 }
             };
             qrCode = new QRCode(document.getElementById("qrcode"), options);
             qrCode.makeCode(confUri.toString());
+            $($("img", "#qrcode")[0]).css('width', '100%');
         })
     }
 
@@ -503,9 +492,8 @@
     }
 
     document.oncopy = async function () {
+        if (isCopyingLink) return;
         if (document.activeElement && ['input', 'textarea'].indexOf(document.activeElement.tagName.toLowerCase()) !== -1 || window.getSelection().toString() !== "") return;
-        if (qrCode) qrCode.clear()
-        await printLink()
         document.getElementById("qrcode").firstChild.toBlob(function (blob) {
             navigator.clipboard.write([new ClipboardItem({'image/png': blob})])
         }, 'image/png');
@@ -514,12 +502,8 @@
     async function setup() {
         const url = new URL(window.location.href);
         const inputUrl = decodeURIComponent(url.searchParams.get("inputUrl"));
-        if(inputUrl && inputUrl!="null") {
+        if (inputUrl && inputUrl !== "null") {
             $('#configurationUrl').val(inputUrl).change();
-            await printLink();
-            document.getElementById("qrcode").firstChild.toBlob(function (blob) {
-                navigator.clipboard.write([new ClipboardItem({'image/png': blob})])
-            }, 'image/png');
         }
     }
 
