@@ -437,10 +437,6 @@
             confUri.searchParams.delete("hmsAppId");
         }
 
-        if($("#pushProvider").val() !== "HMS"){
-            confUri.searchParams.delete("hmsAppId");
-        }
-
         genLink.text = confUri.toString();
         genLink.href = confUri.toString();
 
